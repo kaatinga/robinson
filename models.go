@@ -1,11 +1,13 @@
 package robinson
 
+// Crusoe is single-value cache model.
 type Crusoe[ValueType any] struct {
 	value    ValueType
 	setValue chan ValueType
 	getValue chan chan ValueType
 }
 
+// NewCrusoe creates new single-value cache item.
 func NewCrusoe[ValueType any]() *Crusoe[ValueType] {
 	crusoe := &Crusoe[ValueType]{
 		setValue: make(chan ValueType),
