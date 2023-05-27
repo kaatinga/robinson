@@ -8,9 +8,9 @@ The "Robinson" package is a lightweight and efficient Go library that provides a
 
 Key Features:
 
-- Thread-Safe Caching: The GoCache package offers a thread-safe cache that allows concurrent access from multiple goroutines without the risk of data corruption or race conditions. It provides synchronized operations to ensure safe and reliable caching in concurrent environments.
+- Thread-Safe Caching: The Robinson package offers a thread-safe cache that allows concurrent access from multiple goroutines without the risk of data corruption or race conditions. It provides synchronized operations to ensure safe and reliable caching in concurrent environments.
 - Strong Typing: With Go generics, the cache enforces strong typing, meaning that once the cache is created, it can only store and retrieve values of the exact type specified during initialization. This ensures type safety and prevents accidental data mismatches or type-related errors.
-- Error-Free Operation: The GoCache library is designed to provide a seamless and error-free caching experience. It handles internal operations and resource management efficiently, reducing the possibility of unexpected errors or exceptions during cache operations.
+- Error-Free Operation: The Robinson library is designed to provide a seamless and error-free caching experience. It handles internal operations and resource management efficiently, reducing the possibility of unexpected errors or exceptions during cache operations.
 - Zero Dependencies: The package has been developed to be lightweight and self-contained, with no external dependencies. It minimizes the overall package size and simplifies integration into your projects, avoiding potential conflicts or compatibility issues with other libraries.
 
 ```go
