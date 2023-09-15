@@ -1,43 +1,33 @@
 package robinson
 
+import "sync"
+
 // Crusoe is single-value cache model.
 type Crusoe[ValueType any] struct {
-	value    ValueType
-	setValue chan ValueType
-	getValue chan chan ValueType
+	value ValueType
+
+	sync.RWMutex
 }
 
 // NewCrusoe creates new single-value cache item.
 func NewCrusoe[ValueType any]() *Crusoe[ValueType] {
-	crusoe := &Crusoe[ValueType]{
-		setValue: make(chan ValueType),
-		getValue: make(chan chan ValueType),
-	}
-
-	// Launch the cache.
-	go crusoe.runCache()
-
-	return crusoe
-}
-
-func (c *Crusoe[ValueType]) runCache() {
-	for {
-		select {
-		case cacheValue := <-c.setValue: // set value
-			c.value = cacheValue
-		case output := <-c.getValue: // read value
-			output <- c.value
-			close(output)
-		}
-	}
+	return &Crusoe[ValueType]{}
 }
 
 func (c *Crusoe[ValueType]) Get() ValueType {
-	outputChannel := make(chan ValueType)
-	c.getValue <- outputChannel
-	return <-outputChannel
+	c.RLock()
+	defer c.RUnlock()
+	return c.value
 }
 
 func (c *Crusoe[ValueType]) Set(value ValueType) {
-	c.setValue <- value
+	c.Lock()
+	defer c.Unlock()
+	c.value = value
+}
+
+func (c *Crusoe[ValueType]) Call(f func(v ValueType) ValueType) {
+	c.Lock()
+	defer c.Unlock()
+	c.value = f(c.value)
 }

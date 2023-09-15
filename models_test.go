@@ -2,8 +2,29 @@ package robinson
 
 import (
 	"fmt"
+	"sync"
 	"testing"
 )
+
+func TestCrusoe_Call(t *testing.T) {
+	crusoe := NewCrusoe[int32]()
+	var wg sync.WaitGroup
+	f := func(i int32) int32 {
+		return i + 1
+	}
+	for j := 0; j < 1000; j++ {
+		wg.Add(1)
+		go func() {
+			defer wg.Done()
+			crusoe.Call(f)
+		}()
+	}
+
+	wg.Wait()
+	if crusoe.Get() != 1000 {
+		t.Errorf("strange value returned: %v", crusoe.Get())
+	}
+}
 
 func TestCrusoe_Get_Int(t *testing.T) {
 	tests := []struct {
