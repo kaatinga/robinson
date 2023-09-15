@@ -26,4 +26,21 @@ crusoe.Set(value)
 cacheValue := crusoe.Get()
 ```
 
+To apply atomic operations to the cache, use the `Call()` method:
+
+```go
+value := 123
+
+// Create a cache for storing integer value
+crusoe := NewCrusoe[int]()
+crusoe.Set(value)
+
+// Increment the value in the cache
+crusoe.Call(func(v int) int {
+    return v + 1
+})
+```
+
+In this particular case you might use atomic package to increment value, but it's just an example. The passed function may be intricate and complex as well as the value type.
+
 Whether you need to implement a simple in-memory cache for your application or require a thread-safe caching solution for concurrent operations, the Robinson package provides a reliable and efficient caching mechanism. Its minimalistic design, strong typing, and error-free operation make it a valuable tool for improving performance and enhancing data management in your Go projects.
