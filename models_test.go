@@ -1,13 +1,15 @@
-package robinson
+package robinson_test
 
 import (
 	"fmt"
 	"sync"
 	"testing"
+
+	"github.com/kaatinga/robinson"
 )
 
 func TestCrusoe_Call(t *testing.T) {
-	crusoe := NewCrusoe[int32]()
+	crusoe := robinson.NewCrusoe[int32]()
 	var wg sync.WaitGroup
 	f := func(i int32) int32 {
 		return i + 1
@@ -29,14 +31,14 @@ func TestCrusoe_Call(t *testing.T) {
 func TestCrusoe_Get_Int(t *testing.T) {
 	tests := []struct {
 		value int
-		want  *Crusoe[int]
+		want  *robinson.Crusoe[int]
 	}{
-		{123, &Crusoe[int]{}},
-		{456, &Crusoe[int]{}},
-		{789, &Crusoe[int]{}},
-		{1, &Crusoe[int]{}},
+		{123, &robinson.Crusoe[int]{}},
+		{456, &robinson.Crusoe[int]{}},
+		{789, &robinson.Crusoe[int]{}},
+		{1, &robinson.Crusoe[int]{}},
 	}
-	crusoe := NewCrusoe[int]()
+	crusoe := robinson.NewCrusoe[int]()
 	if fmt.Sprintf("%[1]T", crusoe) != "*robinson.Crusoe[int]" {
 		t.Errorf("strange cache type returned: %T", crusoe)
 	}
