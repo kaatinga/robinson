@@ -82,3 +82,11 @@ crusoe.CallWithError(func(v int) (int, error) {
 In this particular case you might use atomic package to increment value, but it's just an example. The passed function may be intricate and complex as well as the value type.
 
 Whether you need to implement a simple in-memory cache for your application or require a thread-safe caching solution for concurrent operations, the Robinson package provides a reliable and efficient caching mechanism. Its minimalistic design, strong typing, and error-free operation make it a valuable tool for improving performance and enhancing data management in your Go projects.
+
+## License
+
+The "Robinson" package is an open-source software released under the [MIT](LICENSE) License. The original author is Michael Gunkoff.
+
+## Contributing
+
+If you want to contribute to the project, please read the [Contributing Guide](CODE_OF_CONDUCT.md).
