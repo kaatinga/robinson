@@ -4,14 +4,34 @@
 
 # Robinson
 
+## Overview
+
 The "Robinson" package is a lightweight and efficient Go library that provides a thread-safe cache implementation for storing and retrieving values of any type. It offers a simple and minimalistic approach to caching, leveraging the power of Go generics to ensure strong typing and optimal performance.
 
-Key Features:
+## Features
 
 - Thread-Safe Caching: The Robinson package offers a thread-safe cache that allows concurrent access from multiple goroutines without the risk of data corruption or race conditions. It provides synchronized operations to ensure safe and reliable caching in concurrent environments.
 - Strong Typing: With Go generics, the cache enforces strong typing, meaning that once the cache is created, it can only store and retrieve values of the exact type specified during initialization. This ensures type safety and prevents accidental data mismatches or type-related errors.
 - Error-Free Operation: The Robinson library is designed to provide a seamless and error-free caching experience. It handles internal operations and resource management efficiently, reducing the possibility of unexpected errors or exceptions during cache operations.
 - Zero Dependencies: The package has been developed to be lightweight and self-contained, with no external dependencies. It minimizes the overall package size and simplifies integration into your projects, avoiding potential conflicts or compatibility issues with other libraries.
+
+## Installation
+
+To install the Robinson package, use the following command:
+
+```shell
+go get github.com/kaatinga/robinson
+```
+
+## Usage
+
+To use the Robinson package in your Go projects, import it into your code:
+
+```go
+import "github.com/kaatinga/robinson"
+```
+
+To create a new cache, use the `NewCrusoe()` function:
 
 ```go
 value := 123
@@ -38,6 +58,24 @@ crusoe.Set(value)
 // Increment the value in the cache
 crusoe.Call(func(v int) int {
     return v + 1
+})
+```
+
+or you can use `CallWithError()` method:
+
+```go
+value := 123
+
+// Create a cache for storing integer value
+crusoe := NewCrusoe[int]()
+crusoe.Set(value)
+
+// Increment the value in the cache
+crusoe.CallWithError(func(v int) (int, error) {
+	if v == 0 {
+		return 0, errors.New("value is zero")
+	}
+    return v + 1, nil
 })
 ```
 
