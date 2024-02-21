@@ -55,3 +55,13 @@ func (c *Crusoe[ValueType]) CallWithError(f func(v ValueType) (ValueType, error)
 	c.value = newValue
 	return nil
 }
+
+// Check calls function with current value and returns the result of the function without changing the cache value.
+func (c *Crusoe[ValueType]) Check(f func(v ValueType) bool) bool {
+	if f == nil {
+		return false
+	}
+	c.RLock()
+	defer c.RUnlock()
+	return f(c.value)
+}
