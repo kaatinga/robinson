@@ -9,7 +9,7 @@ import (
 )
 
 func TestCrusoe_Call(t *testing.T) {
-	crusoe := robinson.NewCrusoe[int32]()
+	crusoe := robinson.NewCrusoePointer[int32]()
 	var wg sync.WaitGroup
 	f := func(i int32) int32 {
 		return i + 1
@@ -38,7 +38,7 @@ func TestCrusoe_Get_Int(t *testing.T) {
 		tests = append(tests, struct{ value int }{value: i})
 	}
 
-	crusoe := robinson.NewCrusoe[int]()
+	crusoe := robinson.NewCrusoePointer[int]()
 	if fmt.Sprintf("%[1]T", crusoe) != "*robinson.Crusoe[int]" {
 		t.Errorf("strange cache type returned: %T", crusoe)
 	}
