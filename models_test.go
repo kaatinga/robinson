@@ -56,7 +56,7 @@ func TestCrusoe_Get_Int(t *testing.T) {
 	}()
 
 	go func() {
-		t.Run(fmt.Sprintf("get the last value"), func(t *testing.T) {
+		t.Run("get the last value", func(t *testing.T) {
 			cacheValue := crusoe.Get()
 			if cacheValue != tests[len(tests)-1].value {
 				t.Errorf("strange value returned: %v", cacheValue)
