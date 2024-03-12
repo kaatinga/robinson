@@ -37,6 +37,7 @@ func TestCrusoe_Get_Int(t *testing.T) {
 		{456, &robinson.Crusoe[int]{}},
 		{789, &robinson.Crusoe[int]{}},
 		{1, &robinson.Crusoe[int]{}},
+		{2, &robinson.Crusoe[int]{}},
 	}
 	crusoe := robinson.NewCrusoe[int]()
 	if fmt.Sprintf("%[1]T", crusoe) != "*robinson.Crusoe[int]" {
