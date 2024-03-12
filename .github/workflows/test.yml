@@ -1,22 +1,23 @@
-name: Tests
+name: Unit Tests
 
-on: [ push ]
+on:
+  push:
+    paths:
+      - '**.go'
+  pull_request:
+    paths:
+      - '**.go'
 
 jobs:
   build:
-
-    runs-on: [ ubuntu-latest, macos-latest ]
-    strategy:
-      matrix:
-        go-version: [ 1.20.x, 1.21.x ]
-
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Setup Go ${{ matrix.go-version }}
+      - name: Set up Go
         uses: actions/setup-go@v4
         with:
-          go-version: ${{ matrix.go-version }}
-      - name: Display Go version
-        run: go version
-      - name: Test with the Go CLI
+          go-version: '1.21'
+      - name: Build
+        run: go build -v ./...
+      - name: Test
         run: go test -v ./...

@@ -1,18 +1,24 @@
 name: Go Linter
 
-on: [ push ]
+on:
+  push:
+    paths:
+      - '**.go'
+  pull_request:
+    paths:
+      - '**.go'
 
 jobs:
   golangci:
     name: lint
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Setup Go
-        uses: actions/setup-go@v4
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v4
         with:
-          go-version: 1.21.x
+          go-version: '1.21'
+          cache: false
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@v4
+        uses: golangci/golangci-lint-action@v3
         with:
-          version: v1.54.2
+          version: v1.56.0
