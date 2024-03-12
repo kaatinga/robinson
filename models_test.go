@@ -29,47 +29,53 @@ func TestCrusoe_Call(t *testing.T) {
 }
 
 func TestCrusoe_Get_Int(t *testing.T) {
-	tests := []struct {
+	var tests []struct {
 		value int
-		want  *robinson.Crusoe[int]
-	}{
-		{123, &robinson.Crusoe[int]{}},
-		{456, &robinson.Crusoe[int]{}},
-		{789, &robinson.Crusoe[int]{}},
-		{1, &robinson.Crusoe[int]{}},
-		{2, &robinson.Crusoe[int]{}},
 	}
+
+	// fuzzing
+	for i := 0; i < 1000; i++ {
+		tests = append(tests, struct{ value int }{value: i})
+	}
+
 	crusoe := robinson.NewCrusoe[int]()
 	if fmt.Sprintf("%[1]T", crusoe) != "*robinson.Crusoe[int]" {
 		t.Errorf("strange cache type returned: %T", crusoe)
 	}
-	for _, scenario := range tests {
-		t.Run(fmt.Sprintf("%T %[1]v", scenario.value), func(t *testing.T) {
-			crusoe.Set(scenario.value)
-			cacheValue := crusoe.Get()
-			if fmt.Sprintf("%[1]T", cacheValue) != "int" {
-				t.Errorf("strange value type returned: %T", cacheValue)
-			}
-		})
-	}
 
-	{
-		cacheValue := crusoe.Get()
-		if cacheValue != tests[len(tests)-1].value {
-			t.Errorf("strange value returned: %v", cacheValue)
+	go func() {
+		for _, scenario := range tests {
+			t.Run(fmt.Sprintf("%T %[1]v", scenario.value), func(t *testing.T) {
+				crusoe.Set(scenario.value)
+				cacheValue := crusoe.Get()
+				if fmt.Sprintf("%[1]T", cacheValue) != "int" {
+					t.Errorf("strange value type returned: %T", cacheValue)
+				}
+			})
 		}
-	}
+	}()
 
-	for _, scenario := range tests {
-		t.Run(fmt.Sprintf("%T %[1]v", scenario.value), func(t *testing.T) {
-			crusoe.Set(scenario.value)
+	go func() {
+		t.Run(fmt.Sprintf("get the last value"), func(t *testing.T) {
 			cacheValue := crusoe.Get()
-			if fmt.Sprintf("%[1]T", cacheValue) != "int" {
-				t.Errorf("strange value type returned: %T", cacheValue)
-			}
-			if cacheValue != scenario.value {
+			if cacheValue != tests[len(tests)-1].value {
 				t.Errorf("strange value returned: %v", cacheValue)
 			}
 		})
-	}
+	}()
+
+	go func() {
+		for _, scenario := range tests {
+			t.Run(fmt.Sprintf("%T %[1]v", scenario.value), func(t *testing.T) {
+				crusoe.Set(scenario.value)
+				cacheValue := crusoe.Get()
+				if fmt.Sprintf("%[1]T", cacheValue) != "int" {
+					t.Errorf("strange value type returned: %T", cacheValue)
+				}
+				if cacheValue != scenario.value {
+					t.Errorf("strange value returned: %v", cacheValue)
+				}
+			})
+		}
+	}()
 }
