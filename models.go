@@ -9,9 +9,14 @@ type Crusoe[ValueType any] struct {
 	sync.RWMutex
 }
 
-// NewCrusoe creates new single-value cache item.
-func NewCrusoe[ValueType any]() *Crusoe[ValueType] {
+// NewCrusoePointer creates new single-value cache item and return a pointer to the item.
+func NewCrusoePointer[ValueType any]() *Crusoe[ValueType] {
 	return &Crusoe[ValueType]{}
+}
+
+// NewCrusoe creates new single-value cache item.
+func NewCrusoe[ValueType any]() Crusoe[ValueType] {
+	return Crusoe[ValueType]{}
 }
 
 // Get returns current value from cache.
