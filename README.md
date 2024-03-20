@@ -1,4 +1,4 @@
-[![Tests](https://github.com/kaatinga/luna/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/kaatinga/luna/actions/workflows/test.yml)
+[![Tests](https://github.com/kaatinga/robinson/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/kaatinga/robinson/actions/workflows/test.yml)
 [![MIT license](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/kaatinga/robinson/blob/main/LICENSE)
 [![lint workflow](https://github.com/kaatinga/robinson/actions/workflows/golangci-lint.yml/badge.svg)](https://github.com/kaatinga/robinson/actions?query=workflow%3Alinter)
 [![help wanted](https://img.shields.io/badge/Help%20wanted-True-yellow.svg)](https://github.com/robinson/strconv/issues?q=is%3Aopen+is%3Aissue+label%3A%22help+wanted%22)
