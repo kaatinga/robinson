@@ -90,3 +90,4 @@ The "Robinson" package is an open-source software released under the [MIT](LICEN
 ## Contributing
 
 If you want to contribute to the project, please read the [Contributing Guide](CODE_OF_CONDUCT.md).
+[![Tests](https://github.com/kaatinga/luna/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/kaatinga/luna/actions/workflows/test.yml)
