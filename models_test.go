@@ -2,6 +2,7 @@ package robinson_test
 
 import (
 	"fmt"
+	"strconv"
 	"sync"
 	"testing"
 
@@ -43,42 +44,32 @@ func TestCrusoe_Get_Int(t *testing.T) {
 		t.Errorf("strange cache type returned: %T", crusoe)
 	}
 
-	go func() {
-		for _, scenario := range tests {
-			t.Run(fmt.Sprintf("%T %[1]v", scenario.value), func(t *testing.T) {
-				crusoe.Set(scenario.value)
-				cacheValue := crusoe.Get()
-				if fmt.Sprintf("%[1]T", cacheValue) != "int" {
-					t.Errorf("strange value type returned: %T", cacheValue)
-				}
-				if cacheValue != scenario.value {
-					t.Errorf("strange value returned: %v", cacheValue)
-				}
-			})
-		}
-	}()
+	for i := 0; i < 2; i++ {
+		t.Run("set and get "+strconv.Itoa(i), func(t *testing.T) {
+			t.Parallel()
+			for _, scenario := range tests {
+				t.Run(fmt.Sprintf("%T %[1]v", scenario.value), func(t *testing.T) {
+					crusoe.Set(scenario.value)
+					_ = crusoe.Get()
+				})
+			}
+		})
+	}
 
-	//go func() {
-	//	t.Run("get the last value", func(t *testing.T) {
-	//		cacheValue := crusoe.Get()
-	//		if cacheValue != tests[len(tests)-1].value {
-	//			t.Errorf("strange value returned: %v", cacheValue)
-	//		}
-	//	})
-	//}()
+	for _, scenario := range tests {
+		t.Run(fmt.Sprintf("%T %[1]v", scenario.value), func(t *testing.T) {
+			crusoe.Set(scenario.value)
+			cacheValue := crusoe.Get()
+			if cacheValue != scenario.value {
+				t.Errorf("strange value returned: %v", cacheValue)
+			}
+		})
+	}
 
-	go func() {
-		for _, scenario := range tests {
-			t.Run(fmt.Sprintf("%T %[1]v", scenario.value), func(t *testing.T) {
-				crusoe.Set(scenario.value)
-				cacheValue := crusoe.Get()
-				if fmt.Sprintf("%[1]T", cacheValue) != "int" {
-					t.Errorf("strange value type returned: %T", cacheValue)
-				}
-				if cacheValue != scenario.value {
-					t.Errorf("strange value returned: %v", cacheValue)
-				}
-			})
+	t.Run("get the last value", func(t *testing.T) {
+		cacheValue := crusoe.Get()
+		if cacheValue != tests[len(tests)-1].value {
+			t.Errorf("strange value returned: %v", cacheValue)
 		}
-	}()
+	})
 }
