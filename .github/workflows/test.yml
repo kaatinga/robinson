@@ -2,6 +2,10 @@ name: Tests
 
 on:
   push:
+    branches-ignore:
+      - none
+    tags-ignore:
+      - '*'
     paths:
       - '**.go'
       - 'go.mod'
