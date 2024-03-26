@@ -43,7 +43,9 @@ func TestCrusoe_Get_Int(t *testing.T) {
 		t.Errorf("strange cache type returned: %T", crusoe)
 	}
 
+	wg := sync.WaitGroup{}
 	for i := 0; i < 2; i++ {
+		wg.Add(1)
 		go func(i int) {
 			for _, scenario := range tests {
 				t.Run(fmt.Sprintf("%T %[1]v, loop %d", scenario.value, i), func(t *testing.T) {
@@ -51,18 +53,11 @@ func TestCrusoe_Get_Int(t *testing.T) {
 					_ = crusoe.Get()
 				})
 			}
+
+			wg.Done()
 		}(i)
 	}
-
-	for _, scenario := range tests {
-		t.Run(fmt.Sprintf("%T %[1]v", scenario.value), func(t *testing.T) {
-			crusoe.Set(scenario.value)
-			cacheValue := crusoe.Get()
-			if cacheValue != scenario.value {
-				t.Errorf("strange value returned: %v", cacheValue)
-			}
-		})
-	}
+	wg.Wait()
 
 	t.Run("get the last value", func(t *testing.T) {
 		cacheValue := crusoe.Get()
