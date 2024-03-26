@@ -2,7 +2,6 @@ package robinson_test
 
 import (
 	"fmt"
-	"strconv"
 	"sync"
 	"testing"
 
@@ -45,15 +44,14 @@ func TestCrusoe_Get_Int(t *testing.T) {
 	}
 
 	for i := 0; i < 2; i++ {
-		t.Run("set and get "+strconv.Itoa(i), func(t *testing.T) {
-			t.Parallel()
+		go func(i int) {
 			for _, scenario := range tests {
-				t.Run(fmt.Sprintf("%T %[1]v", scenario.value), func(t *testing.T) {
+				t.Run(fmt.Sprintf("%T %[1]v, loop %d", scenario.value, i), func(t *testing.T) {
 					crusoe.Set(scenario.value)
 					_ = crusoe.Get()
 				})
 			}
-		})
+		}(i)
 	}
 
 	for _, scenario := range tests {
