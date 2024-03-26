@@ -6,7 +6,7 @@ import "sync"
 type Crusoe[ValueType any] struct {
 	value ValueType
 
-	sync.RWMutex
+	me sync.RWMutex
 }
 
 // NewCrusoePointer creates new single-value cache item and return a pointer to the item.
@@ -21,17 +21,17 @@ func NewCrusoe[ValueType any]() Crusoe[ValueType] {
 
 // Get returns current value from cache.
 func (c *Crusoe[ValueType]) Get() ValueType {
-	c.RLock()
+	c.me.RLock()
 	output := c.value
-	c.RUnlock()
+	c.me.RUnlock()
 	return output
 }
 
 // Set sets value to cache.
 func (c *Crusoe[ValueType]) Set(value ValueType) {
-	c.Lock()
+	c.me.Lock()
 	c.value = value
-	c.Unlock()
+	c.me.Unlock()
 }
 
 // Call calls function with current value and using arbitrary processing in the function may set a new value to cache.
@@ -40,8 +40,8 @@ func (c *Crusoe[ValueType]) Call(f func(v ValueType) ValueType) {
 	if f == nil {
 		return
 	}
-	c.Lock()
-	defer c.Unlock()
+	c.me.Lock()
+	defer c.me.Unlock()
 	c.value = f(c.value)
 }
 
@@ -51,8 +51,8 @@ func (c *Crusoe[ValueType]) CallWithError(f func(v ValueType) (ValueType, error)
 	if f == nil {
 		return NewFunctionNotPassedError()
 	}
-	c.Lock()
-	defer c.Unlock()
+	c.me.Lock()
+	defer c.me.Unlock()
 	newValue, err := f(c.value)
 	if err != nil {
 		return err
@@ -66,7 +66,7 @@ func (c *Crusoe[ValueType]) Check(f func(v ValueType) bool) bool {
 	if f == nil {
 		return false
 	}
-	c.RLock()
-	defer c.RUnlock()
+	c.me.RLock()
+	defer c.me.RUnlock()
 	return f(c.value)
 }
