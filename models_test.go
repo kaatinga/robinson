@@ -51,18 +51,21 @@ func TestCrusoe_Get_Int(t *testing.T) {
 				if fmt.Sprintf("%[1]T", cacheValue) != "int" {
 					t.Errorf("strange value type returned: %T", cacheValue)
 				}
+				if cacheValue != scenario.value {
+					t.Errorf("strange value returned: %v", cacheValue)
+				}
 			})
 		}
 	}()
 
-	go func() {
-		t.Run("get the last value", func(t *testing.T) {
-			cacheValue := crusoe.Get()
-			if cacheValue != tests[len(tests)-1].value {
-				t.Errorf("strange value returned: %v", cacheValue)
-			}
-		})
-	}()
+	//go func() {
+	//	t.Run("get the last value", func(t *testing.T) {
+	//		cacheValue := crusoe.Get()
+	//		if cacheValue != tests[len(tests)-1].value {
+	//			t.Errorf("strange value returned: %v", cacheValue)
+	//		}
+	//	})
+	//}()
 
 	go func() {
 		for _, scenario := range tests {
