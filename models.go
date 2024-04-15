@@ -37,12 +37,11 @@ func (c *Crusoe[ValueType]) Set(value ValueType) {
 // Call calls function with current value and using arbitrary processing in the function may set a new value to cache.
 // It is possible to use this function to update cache value using an external source or whatever, the operation is atomic.
 func (c *Crusoe[ValueType]) Call(f func(v ValueType) ValueType) {
-	if f == nil {
-		return
+	if f != nil {
+		c.me.Lock()
+		defer c.me.Unlock()
+		c.value = f(c.value)
 	}
-	c.me.Lock()
-	defer c.me.Unlock()
-	c.value = f(c.value)
 }
 
 // CallWithError calls function with current value and allows error handling.
