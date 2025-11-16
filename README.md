@@ -8,7 +8,7 @@
 
 ## Overview
 
-The "Robinson" package is a lightweight and efficient Go library that provides a thread-safe cache implementation for storing and retrieving values of any type. It offers a simple and minimalistic approach to caching, leveraging the power of Go generics to ensure strong typing and optimal performance.
+The "Robinson" package is a lightweight Golang package that provides a thread-safe cache implementation for storing and retrieving values of any type. Robinson supports evicting the stored values.
 
 ## Features
 

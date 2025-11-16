@@ -1,10 +1,14 @@
 package robinson
 
-import "sync"
+import (
+	"sync"
+	"time"
+)
 
 // Crusoe is single-value cache model.
 type Crusoe[ValueType any] struct {
 	value ValueType
+	options
 
 	me sync.RWMutex
 }
@@ -14,9 +18,32 @@ func NewCrusoePointer[ValueType any]() *Crusoe[ValueType] {
 	return &Crusoe[ValueType]{}
 }
 
+type options = struct {
+	evictionTime time.Duration
+	doNotTouch   bool
+}
+
+func WithEvict[ValueType any](ttl time.Duration) func(*options) {
+	return func(opts *options) {
+		opts.evictionTime = ttl
+	}
+}
+
+func WithDoNotTouch[ValueType any]() func(*options) {
+	return func(opts *options) {
+		opts.doNotTouch = true
+	}
+}
+
 // NewCrusoe creates new single-value cache item.
-func NewCrusoe[ValueType any]() Crusoe[ValueType] {
-	return Crusoe[ValueType]{}
+func NewCrusoe[ValueType any](optFns ...func(*options)) Crusoe[ValueType] {
+	opts := options{}
+	for _, fn := range optFns {
+		fn(&opts)
+	}
+	return Crusoe[ValueType]{
+		options: opts,
+	}
 }
 
 // Get returns current value from cache.
